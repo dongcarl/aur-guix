@@ -6,8 +6,8 @@
 #   gpg --recv-keys 3CE464558A84FDC69DB40CFB090B11993D9AEBB5
 
 pkgname=guix
-pkgver=1.1.0
-pkgrel=2
+pkgver=1.2.0
+pkgrel=0
 pkgdesc="A purely functional package manager for the GNU system"
 arch=('x86_64' 'i686' 'armv7h')
 url="https://www.gnu.org/software/guix/"
@@ -16,31 +16,32 @@ options=('!strip')
 makedepends=(
   'bash-completion'
   'fish'
-  'guile-json3'
-  'guile-ssh>=0.10.2'
+  'guile-json>=4.3.0'
+  'guile-ssh>=0.13.0'
   'help2man'
   'po4a')
 depends=(
   'guile>=2.2.4'
-  'guile-gcrypt'
-  'guile-git-lib'
-  'guile-sqlite3'
+  'guile-gcrypt>=0.1.0'
+  'guile-git-lib>=0.3.0'
+  'guile-sqlite3>=0.1.0'
   'sqlite>=3.6.19'
   'bzip2'
   'gnutls'
   'libgcrypt'
   'lzlib'
-  'zlib')
+  'zlib'
+  'guile-zlib-git'
+  'guile-lzlib-git')
 optdepends=(
   'bash-completion: to enable bash programmable completion'
-  'guile-json3: to import packages from cpan, gem, pypi'
   'guile-ssh: to offload builds to other machines')
 source=(
   "https://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz"{,.sig})
 install="${pkgname}.install"
 sha256sums=(
-  '5c59106ff4ac497c6097686834b0c914109cf5e44eb6b94ebce818923043640f'
-  '0416a733ba9b4410897d744a24388a43ba11bd8c427c7d08e649c8875119333d')
+  '5ecdf7ced25b1fb0ca7c57e794b7b60c8a7adcb15261dec2af37925c838c6d74'
+  'e278e3aba3fe9acd35aa6586933d940f0c847ccfb6d1370cb5c4f754732d2fb6')
 validpgpkeys=('3CE464558A84FDC69DB40CFB090B11993D9AEBB5')
 
 build() {
@@ -53,7 +54,7 @@ build() {
 		--with-fish-completion-dir="${fish_completion_dir}" \
 		--disable-rpath \
 		ac_cv_guix_test_root="$(pwd)/t"
-	make
+	make -j9
 }
 
 check() {
